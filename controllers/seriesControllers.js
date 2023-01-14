@@ -31,22 +31,22 @@ seriesControllers.newSerie = async (req, res) => {
 
 seriesControllers.updateSerie = async (req, res) => {
     let _id = req.body._id;
-    let tittle = req.body.tittle;
-    let year = req.body.year;
-    let genre = req.body.genre;
-    let rating = req.body.rating;
-    let newChapSevenDays = req.body.newChapSevenDays;
-    let accessTheatreCinema= req.body.accessTheatreCinema;
+    let newTittle = req.body.tittle;
+    let newYear = req.body.year;
+    let newGenre = req.body.genre;
+    let newRating = req.body.rating;
+    let newnewChapSevenDays = req.body.newChapSevenDays;
+    let newaccessTheatreCinema= req.body.accessTheatreCinema;
     try {
-        let result = await serie.findByIdAndUpdate(_id, {
-            $set: {
+        let result = await serie.findByIdAndUpdate({_id:_id}, {
+            
                 tittle: newTittle,
                 year: newYear,
                 genre: newGenre,
                 rating: newRating,
                 newChapSevenDays: newnewChapSevenDays,
                 accessTheatreCinema : newaccessTheatreCinema
-            }
+            
         }).setOptions({ returnDocument: 'after' })
 
         if (result?.tittle) {

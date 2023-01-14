@@ -31,18 +31,18 @@ moviesControllers.newMovie = async (req, res) => {
 moviesControllers.updateMovie = async (req, res) => {
     try{
         let _id = req.body._id;
-        let tittle = req.body.tittle;
-        let year = req.body.year;
-        let genre = req.body.genre;
-        let rating = req.body.rating;
-        let result = await movie.findByIdAndUpdate(_id, {
-            $set: {
+        let newTittle = req.body.tittle;
+        let newYear = req.body.year;
+        let newGenre = req.body.genre;
+        let newRating = req.body.rating;
+        let result = await movie.findByIdAndUpdate({_id:_id}, 
+            {
                 tittle: newTittle,
                 year: newYear,
                 genre: newGenre,
                 rating: newRating
             }
-        }
+        
         ).setOptions({ returnDocument: 'after' })
         if (result?.tittle) {
             res.send(result)

@@ -2,7 +2,7 @@
 const express=require('express');
 const app=express();
 const dbconnect = require("./db/dbconnect");
-const PORT = 5500;
+const PORT = 5501;
 const router = require('./router');
 
 //Para poder usar json
