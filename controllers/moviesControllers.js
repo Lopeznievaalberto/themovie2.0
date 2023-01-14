@@ -29,13 +29,13 @@ moviesControllers.newMovie = async (req, res) => {
 };
 
 moviesControllers.updateMovie = async (req, res) => {
-    let id = req.body.id;
-    let tittle = req.body.tittle;
-    let year = req.body.year;
-    let genre = req.body.genre;
-    let rating = req.body.rating;
-    try {
-        let result = await movie.findByIdAndUpdate(id, {
+    try{
+        let _id = req.body._id;
+        let tittle = req.body.tittle;
+        let year = req.body.year;
+        let genre = req.body.genre;
+        let rating = req.body.rating;
+        let result = await movie.findByIdAndUpdate(_id, {
             $set: {
                 tittle: newTittle,
                 year: newYear,
@@ -53,9 +53,9 @@ moviesControllers.updateMovie = async (req, res) => {
 };
 
 moviesControllers.deleteMovie = async (req, res) => {
-    let id = req.body.id;
     try {
-        let result = await movie.findByIdAndDelete(id);
+        let _id = req.body._id;
+        let result = await movie.findByIdAndDelete(_id);
         res.send({ "Message": `La película ${result.tittle} se ha eliminado con éxito` })
     } catch (error) {
         console.log("Error deleting movie", error);
@@ -76,11 +76,11 @@ moviesControllers.getAllMovies = async (req, res) => {
 };
 
 moviesControllers.postMoviesByRating = async (req, res) => {
-    const rating = req.body.rating;
     try {
+        const rating = req.body.rating;
         if (rating <= 10) {
-            const rating = await movie.find({ rating: rating });
-            res.send({ "Message": "rating subido" });
+            const rate = await movie.find({ rating: rating });
+            res.send( rate);
         } else {
             res.send({ "Message": 'rating no válido,${rated}' })
         }
@@ -88,10 +88,11 @@ moviesControllers.postMoviesByRating = async (req, res) => {
         res.send({ "Message": 'rating/movie not found, ${rated}' })
     }
 };
+
 moviesControllers.postMoviesById = async (req, res) => {
-    let id = req.body.id;
     try {
-        const moviesbyid = await movie.find({id: id});
+        let _id = req.body._id;
+        const moviesbyid = await movie.find({_id: _id});
         res.send({ "Message": moviesbyid});
     } catch (error) {
         res.send({"Message": `id not register ${_id}`})
@@ -99,8 +100,8 @@ moviesControllers.postMoviesById = async (req, res) => {
 };
 
 moviesControllers.postMoviesByTittle = async (req, res) => {
-    const tittle = req.body.tittle;
     try {
+        const tittle = req.body.tittle;
         const moviesbytittle = await movie.find({
             tittle: tittle
         })
@@ -115,8 +116,8 @@ moviesControllers.postMoviesByTittle = async (req, res) => {
 };
 
 moviesControllers.postMoviesByGenre = async (req, res) => {
-    const genre = req.body.genre;
     try {
+        const genre = req.body.genre;
         const moviesbygenre = await movie.find({
             genre: genre
         })

@@ -8,10 +8,10 @@ router.get("/getAll", moviesControllers.getAllMovies);
 router.post("/newMovie", moviesControllers.newMovie);
 router.put("/updateMovie", moviesControllers.updateMovie);
 router.delete("/deleteMovie", moviesControllers.deleteMovie);
-router.post("/rating", moviesControllers.postMoviesByRating);
-router.post("/id", moviesControllers.postMoviesById);
-router.post("/tittle", moviesControllers.postMoviesByTittle);
-router.post("/genre", moviesControllers.postMoviesByGenre);
+router.get("/rating", moviesControllers.postMoviesByRating);
+router.get("/id", moviesControllers.postMoviesById);
+router.get("/tittle", moviesControllers.postMoviesByTittle);
+router.get("/genre", moviesControllers.postMoviesByGenre);
 
 
 module.exports = router;

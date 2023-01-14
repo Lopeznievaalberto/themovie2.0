@@ -1,5 +1,4 @@
 
-
 const express = require('express');
 const router = express.Router();
 const seriesControllers = require('../controllers/seriesControllers');
@@ -9,13 +8,12 @@ router.get("/getAll", seriesControllers.getAllSeries);
 router.post("/newSerie", seriesControllers.newSerie);
 router.put("/updateSerie", seriesControllers.updateSerie);
 router.delete("/deleteSerie", seriesControllers.deleteSerie);
-router.post("/rating", seriesControllers.postSeriesByRating);
-router.post("/id", seriesControllers.postSeriesById);
-router.post("/tittle", seriesControllers.postSeriesByTittle);
-router.post("/genre", seriesControllers.postSeriesByGenre);
-router.post("/newChapSevenDays", seriesControllers.postnewChapSevenDays);
-router.post("/accessTheatreCinema", seriesControllers.postaccessTheatreCinema);
-
+router.get("/rating", seriesControllers.postSeriesByRating);
+router.get("/id", seriesControllers.postSeriesById);
+router.get("/tittle", seriesControllers.postSeriesByTittle);
+router.get("/genre", seriesControllers.postSeriesByGenre);
+router.get("/newChapSevenDays", seriesControllers.postnewChapSevenDays);
+router.get("/accessTheatreCinema", seriesControllers.postaccessTheatreCinema);
 
 
 module.exports = router;
