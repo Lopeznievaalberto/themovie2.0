@@ -1,0 +1,3 @@
+AUTH_SECRET="siguerebuscandodurante1123581321"
+AUTH_EXPIRES="24h"
+AUTH_ROUNDS=10
