@@ -2,7 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const seriesSchema = new Schema ({
-    
+    poster_path: {
+        type: String,
+        required: true
+    },
     tittle: {
         type: String,
         required: true
@@ -21,6 +24,10 @@ const seriesSchema = new Schema ({
     },
     accessTheatreCinema:{
         type: String,
+    },
+    overview: {
+        type: String,
+        required: true
     }
 });
 

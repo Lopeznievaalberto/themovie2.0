@@ -5,12 +5,12 @@ const seriesControllers = require('../controllers/seriesControllers');
 
 //Endpoints
 router.get("/getAll", seriesControllers.getAllSeries);
-router.post("/newSerie", auth, seriesControllers.newSerie);
-router.put("/updateSerie", auth, seriesControllers.updateSerie);
-router.delete("/deleteSerie", auth, seriesControllers.deleteSerie);
+router.post("/newSerie", seriesControllers.newSerie);
+router.put("/updateSerie", seriesControllers.updateSerie);
+router.delete("/deleteSerie", seriesControllers.deleteSerie);
 router.post("/rating", seriesControllers.postSeriesByRating);
 router.post("/id", seriesControllers.postSeriesById);
-router.post("/tittle", seriesControllers.postSeriesByTittle);
+router.get("/", seriesControllers.postSeriesBytittle);
 router.post("/genre", seriesControllers.postSeriesByGenre);
 router.post("/newChapSevenDays", seriesControllers.postnewChapSevenDays);
 router.post("/accessTheatreCinema", seriesControllers.postaccessTheatreCinema);

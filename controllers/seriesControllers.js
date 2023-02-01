@@ -18,9 +18,11 @@ seriesControllers.getAllSeries = async (req, res) => {
 
 seriesControllers.newSerie = async (req, res) => {
     try {
-        let result = await serie.create({ tittle: req.body.tittle, year: req.body.year, genre: req.body.genre, 
-            rating: req.body.rating, newChapSevenDays : req.body.newChapSevenDays , 
-            accessTheatreCinema: req.body.accessTheatreCinema})
+        let result = await serie.create({
+            poster_path: req.body.poster_path, tittle: req.body.tittle, year: req.body.year, genre: req.body.genre,
+            rating: req.body.rating, newChapSevenDays: req.body.newChapSevenDays,
+            accessTheatreCinema: req.body.accessTheatreCinema, overview: req.body.overview,
+        })
         if (result?.tittle) {
             res.send({ "Message": `La serie ${result.tittle} se ha añadido con éxito` })
         }
@@ -31,22 +33,25 @@ seriesControllers.newSerie = async (req, res) => {
 
 seriesControllers.updateSerie = async (req, res) => {
     let _id = req.body._id;
-    let newTittle = req.body.tittle;
+    let newposter_path = req.body.poster_path;
+    let newtittle = req.body.tittle;
     let newYear = req.body.year;
     let newGenre = req.body.genre;
     let newRating = req.body.rating;
     let newnewChapSevenDays = req.body.newChapSevenDays;
-    let newaccessTheatreCinema= req.body.accessTheatreCinema;
+    let newaccessTheatreCinema = req.body.accessTheatreCinema;
+    let newoverview = req.body.overview;
+
     try {
-        let result = await serie.findByIdAndUpdate({_id:_id}, {
-            
-                tittle: newTittle,
-                year: newYear,
-                genre: newGenre,
-                rating: newRating,
-                newChapSevenDays: newnewChapSevenDays,
-                accessTheatreCinema : newaccessTheatreCinema
-            
+        let result = await serie.findByIdAndUpdate({ _id: _id }, {
+            poster_path: newposter_path,
+            tittle: newtittle,
+            year: newYear,
+            genre: newGenre,
+            rating: newRating,
+            newChapSevenDays: newnewChapSevenDays,
+            accessTheatreCinema: newaccessTheatreCinema,
+            overview: newoverview,
         }).setOptions({ returnDocument: 'after' })
 
         if (result?.tittle) {
@@ -84,29 +89,42 @@ seriesControllers.postSeriesByRating = async (req, res) => {
 seriesControllers.postSeriesById = async (req, res) => {
     try {
         let _id = req.body._id;
-        const seriesbyid = await serie.find({_id: _id});
-        res.send({ "Message": seriesbyid});
+        const seriesbyid = await serie.find({ _id: _id });
+        res.send({ "Message": seriesbyid });
     } catch (error) {
-        res.send({"Message": `id not register ${_id}`})
+        res.send({ "Message": `id not register ${_id}` })
     }
 };
 
-seriesControllers.postSeriesByTittle = async (req, res) => {
-    try {
-        const tittle = req.body.tittle;
-        const seriesbytittle = await serie.find({
-            tittle: tittle
-        })
-        if(seriesbytittle.length === 0){
-            res.send({"Message": `Serie not found, ${tittle} `});
-        }else{
-            res.send(seriesbytittle)
-        }
-    } catch (error) {
-        console.log(error)
-    }
-};
+seriesControllers.postSeriesBytittle = async (req, res) => {
+    // try {
+    // const {tittle, year} = req.query;
+    // const seriesbytittle = await serie.find({$or:[{tittle},{year}]})
+   //if (Object.keys(req.query.tittle, req.query.genre, req.query.rating, req.query.newChapSevenDays, 
+    //    req.query.accessTheatreCinema,).length !== 0);
+    const filter = {};
+    if (req.query.tittle) filter.tittle = req.query.tittle;
+    if (req.query.genre) filter.genre = req.query.genre;
+    if (req.query.rating) filter.rating = req.query.rating;
+    if (req.query.newChapSevenDays) filter.newChapSevenDays = req.query.newChapSevenDays;
+    if (req.query.accessTheatreCinema) filter.accessTheatreCinema = req.query.accessTheatreCinema;
 
+
+    const rest = await serie.find(filter);
+    res.json(rest);
+
+}
+/*
+if (seriesbytittle.length === 0) {
+    res.send({ "Message": `Serie not found, ${tittle} ` });
+} else {
+    res.send(seriesbytittle)
+}
+} catch (error) {
+console.log(error)
+}
+};
+*/
 
 
 seriesControllers.postSeriesByGenre = async (req, res) => {
@@ -115,9 +133,9 @@ seriesControllers.postSeriesByGenre = async (req, res) => {
         const seriesbygenre = await serie.find({
             genre: genre
         })
-        if(seriesbygenre.length === 0){
-            res.send({"Message": `Genre not found, ${genre} `});
-        }else{
+        if (seriesbygenre.length === 0) {
+            res.send({ "Message": `Genre not found, ${genre} ` });
+        } else {
             res.send(seriesbygenre)
         }
     } catch (error) {
@@ -129,11 +147,11 @@ seriesControllers.postnewChapSevenDays = async (req, res) => {
     try {
         const SevenDays = req.body.newChapSevenDays;
         const newChapSevenDays = await serie.find({
-           SevenDays: SevenDays
+            SevenDays: SevenDays
         })
-        if(newChapSevenDays.length === 0){
-            res.send({"Message": ` not found, ${SevenDays} `});
-        }else{
+        if (newChapSevenDays.length === 0) {
+            res.send({ "Message": ` not found, ${SevenDays} ` });
+        } else {
             res.send(newChapSevenDays)
         }
     } catch (error) {
@@ -141,15 +159,15 @@ seriesControllers.postnewChapSevenDays = async (req, res) => {
     }
 };
 
-seriesControllers.postaccessTheatreCinema= async (req, res) => {
+seriesControllers.postaccessTheatreCinema = async (req, res) => {
     try {
         const accessTheatreCinema = req.body.accessTheatreCinema;
         const seriesTheatreCinema = await serie.find({
-           accessTheatreCinema: accessTheatreCinema
+            accessTheatreCinema: accessTheatreCinema
         })
-        if(seriesTheatreCinema.length === 0){
-            res.send({"Message": ` not found, ${accessTheatreCinema} `});
-        }else{
+        if (seriesTheatreCinema.length === 0) {
+            res.send({ "Message": ` not found, ${accessTheatreCinema} ` });
+        } else {
             res.send(seriesTheatreCinema)
         }
     } catch (error) {

@@ -31,13 +31,13 @@ moviesControllers.newMovie = async (req, res) => {
 moviesControllers.updateMovie = async (req, res) => {
     try{
         let _id = req.body._id;
-        let newTittle = req.body.tittle;
+        let newtittle = req.body.tittle;
         let newYear = req.body.year;
         let newGenre = req.body.genre;
         let newRating = req.body.rating;
         let result = await movie.findByIdAndUpdate({_id:_id}, 
             {
-                tittle: newTittle,
+                tittle: newtittle,
                 year: newYear,
                 genre: newGenre,
                 rating: newRating
@@ -99,7 +99,7 @@ moviesControllers.postMoviesById = async (req, res) => {
     }
 };
 
-moviesControllers.postMoviesByTittle = async (req, res) => {
+moviesControllers.postMoviesBytittle = async (req, res) => {
     try {
         const tittle = req.body.tittle;
         const moviesbytittle = await movie.find({

@@ -22,14 +22,16 @@ usersControllers.getAllUsers = async (req, res) => {
 
 usersControllers.getUsersByName = async (req, res) => {
 
-    let name = req.body.name
+    let name = req.params.name
     try {
-        await User.find({
+        const Users = await User.find({
             name: name
         })
-            .then(foundUsers => {
-                res.send(foundUsers)
-            })
+        if (Users.length === 0) {
+            res.status(404)
+            res.json({ error: "Not found" })
+        }
+        res.send(Users)
     } catch (error) {
         console.log(error)
     }
@@ -45,6 +47,7 @@ usersControllers.newUser = async (req, res) => {
             dni: req.body.dni,
             email: req.body.email,
             password: password,
+            rol: req.body.rol,
         })
         if (user) {
             res.send({ "Message": `El usuario ${user.name} se ha añadido con éxito` })
@@ -76,7 +79,22 @@ usersControllers.updateUser = async (req, res) => {
     } catch (error) {
         console.log("Error updating user data", error);
     }
-}
+};
+
+usersControllers.deleteUser = async (req, res) => {
+    let email = req.body.email;
+
+    try {
+        let deleted = await User.findOneAndDelete({
+            email: email
+        })
+        if (deleted) {
+            res.send({ "Message": `EL usuario ${deleted.name} ha sido borrado correctamente` })
+        }
+    } catch (error) {
+        console.log("Error", error);
+    }
+};
 
 usersControllers.loginUser = async (req, res) => {
 
@@ -84,6 +102,7 @@ usersControllers.loginUser = async (req, res) => {
         let userFound = await User.find({
             email: req.body.email
         })
+        
         if (userFound) {
             if (userFound[0].email === undefined) {
                 res.send("Usuario o password incorrecto");
