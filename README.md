@@ -83,6 +83,13 @@ sirve para acceder a la base de datos con user ya creado, mediante los campos: "
 -router.post("/byName", auth, usersControllers.getUsersByName);
 sirve para obtener el nombre de un usuario si es que existe en la base de datos mediante el campo: "name"
 
+Endpoints sobres alquiler:
+
+-router.get('/getAll', alquilerControllers.getAll);
+sirve para obtener todos los alquileres
+
+-router.post('/newAlquiler', auth, alquilerControllers.newAlquiler);
+sirve para crear un nuevo alquiler
 
 
 

@@ -95,37 +95,24 @@ seriesControllers.postSeriesById = async (req, res) => {
         res.send({ "Message": `id not register ${_id}` })
     }
 };
-
-seriesControllers.postSeriesBytittle = async (req, res) => {
-    // try {
-    // const {tittle, year} = req.query;
-    // const seriesbytittle = await serie.find({$or:[{tittle},{year}]})
-   //if (Object.keys(req.query.tittle, req.query.genre, req.query.rating, req.query.newChapSevenDays, 
-    //    req.query.accessTheatreCinema,).length !== 0);
-    const filter = {};
-    if (req.query.tittle) filter.tittle = req.query.tittle;
-    if (req.query.genre) filter.genre = req.query.genre;
-    if (req.query.rating) filter.rating = req.query.rating;
-    if (req.query.newChapSevenDays) filter.newChapSevenDays = req.query.newChapSevenDays;
-    if (req.query.accessTheatreCinema) filter.accessTheatreCinema = req.query.accessTheatreCinema;
-
-
-    const rest = await serie.find(filter);
-    res.json(rest);
-
-}
-/*
-if (seriesbytittle.length === 0) {
-    res.send({ "Message": `Serie not found, ${tittle} ` });
-} else {
-    res.send(seriesbytittle)
-}
-} catch (error) {
-console.log(error)
-}
+seriesControllers.postSeriesById = async (req, res) => {
+    try {
+        let _id = req.body._id;
+        const seriesbyid = await serie.find({ _id: _id });
+        res.send({ "Message": seriesbyid });
+    } catch (error) {
+        res.send({ "Message": `id not register ${_id}` })
+    }
 };
-*/
-
+seriesControllers.postSeriesBytittle = async (req, res) => {
+    try {
+        let tittle = req.body.tittle;
+        const seriesbytittle = await serie.find({ tittle: tittle });
+        res.send({ "Message": seriesbytittle });
+    } catch (error) {
+        res.send({ "Message": `id not register ${tittle}` })
+    }
+};
 
 seriesControllers.postSeriesByGenre = async (req, res) => {
     try {

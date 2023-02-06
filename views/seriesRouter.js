@@ -14,6 +14,6 @@ router.get("/", seriesControllers.postSeriesBytittle);
 router.post("/genre", seriesControllers.postSeriesByGenre);
 router.post("/newChapSevenDays", seriesControllers.postnewChapSevenDays);
 router.post("/accessTheatreCinema", seriesControllers.postaccessTheatreCinema);
-
+router.post("/grupo", seriesControllers.postgrupo);
 
 module.exports = router;

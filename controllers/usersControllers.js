@@ -6,23 +6,23 @@ const authConfig = require('../config/auth');
 const usersControllers = {};
 
 usersControllers.getAllUsers = async (req, res) => {
-
+    let rol = req.body.rol;
     try {
-        let result = await User.find({});
-
-        if (result.length > 0) {
-            res.send(result)
-        } else {
-            res.send({ "Message": "Lo sentimos, no hemos encontrado ningún usuario." })
+        if (rol == "admin") {
+            let result = await User.find({});
+            if (result.length > 0) {
+                res.send(result)
+            } else {
+                res.send({ "Message": "Usuario not found" })
+            }
         }
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 usersControllers.getUsersByName = async (req, res) => {
-
-    let name = req.params.name
+    let name = req.body.name
     try {
         const Users = await User.find({
             name: name
@@ -35,12 +35,11 @@ usersControllers.getUsersByName = async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-}
+};
 
-usersControllers.newUser = async (req, res) => {
-
-    let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.ROUNDS));
+usersControllers.newUser = async (req, res) => {   
     try {
+        let password = bcrypt.hashSync(req.body.password, Number.parseInt(authConfig.ROUNDS));
         let user = await User.create({
             name: req.body.name,
             surname: req.body.surname,
@@ -54,6 +53,7 @@ usersControllers.newUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
+        return res.send({"error": `El usuario no se ha añadido con éxito`})
     }
 };
 
@@ -83,7 +83,6 @@ usersControllers.updateUser = async (req, res) => {
 
 usersControllers.deleteUser = async (req, res) => {
     let email = req.body.email;
-
     try {
         let deleted = await User.findOneAndDelete({
             email: email
@@ -97,7 +96,6 @@ usersControllers.deleteUser = async (req, res) => {
 };
 
 usersControllers.loginUser = async (req, res) => {
-
     try {
         let userFound = await User.find({
             email: req.body.email
@@ -109,13 +107,14 @@ usersControllers.loginUser = async (req, res) => {
             } else {
                 if (bcrypt.compareSync(req.body.password, userFound[0].password)) {
 
-                    let token = jsonwebtoken.sign({ usuario: userFound }, authConfig.SECRET, {
+                    let token = jsonwebtoken.sign({ _id: userFound[0]._id, rol: userFound[0].rol }, authConfig.SECRET, {
                         expiresIn: authConfig.EXPIRES
                     });
                     let loginOk = `Bienvenido de nuevo ${userFound[0].name}`;
                     res.json({
                         loginOk,
-                        token: token
+                        token: token,
+                        userFound: userFound
                     })
                 } else {
                     res.send("Usuario o password incorrecto");
@@ -125,6 +124,6 @@ usersControllers.loginUser = async (req, res) => {
     } catch (error) {
         res.send("Email o password incorrectos");
     }
-}
+};
 
 module.exports = usersControllers;

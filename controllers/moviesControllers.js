@@ -18,8 +18,8 @@ moviesControllers.getAllMovies = async (req, res) => {
 
 moviesControllers.newMovie = async (req, res) => {
     try {
-        let result = await movie.create({ tittle: req.body.tittle, year: req.body.year, genre: req.body.genre, 
-            rating: req.body.rating })
+        let result = await movie.create({ poster_path: req.body.poster_path, tittle: req.body.tittle, year: req.body.year, genre: req.body.genre, 
+            rating: req.body.rating,  overview: req.body.overview,})
         if (result?.tittle) {
             res.send({ "Message": `La película ${result.tittle} se ha añadido con éxito` })
         }
@@ -31,18 +31,21 @@ moviesControllers.newMovie = async (req, res) => {
 moviesControllers.updateMovie = async (req, res) => {
     try{
         let _id = req.body._id;
+        let newposter_path = req.body.poster_path;
         let newtittle = req.body.tittle;
         let newYear = req.body.year;
         let newGenre = req.body.genre;
         let newRating = req.body.rating;
+        let newoverview = req.body.overview;
         let result = await movie.findByIdAndUpdate({_id:_id}, 
             {
+                poster_path: newposter_path,
                 tittle: newtittle,
                 year: newYear,
                 genre: newGenre,
-                rating: newRating
+                rating: newRating,
+                overview: newoverview,
             }
-        
         ).setOptions({ returnDocument: 'after' })
         if (result?.tittle) {
             res.send(result)
@@ -59,19 +62,6 @@ moviesControllers.deleteMovie = async (req, res) => {
         res.send({ "Message": `La película ${result.tittle} se ha eliminado con éxito` })
     } catch (error) {
         console.log("Error deleting movie", error);
-    }
-};
-
-moviesControllers.getAllMovies = async (req, res) => {
-    try {
-        let allMovies = await movie.find({});
-        if (allMovies.length > 0) {
-            res.send(allMovies)
-        } else {
-            res.send({ "Message": "Película no encontrada" })
-        }
-    } catch (error) {
-        console.log(error);
     }
 };
 
